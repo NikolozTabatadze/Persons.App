@@ -1,7 +1,7 @@
 ﻿@model PersonViewModel
 @{ ViewBag.Title = "Add Persons"; }
 
-<form method="post" asp-controller="Person" asp-action="Create">
+<form method="post" enctype="multipart/form-data" asp-controller="Person" asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <label asp-for="FirstName">First Name</label>
     <br />
@@ -62,9 +62,14 @@
     <br />
 
 
-    <div class="mb-3">
-        <label asp-for="Image">Default file input example</label>
-        <input asp-for="Image" class="form-control" type="file" id="formFile">
+    <div class="form-group Row">
+        <label asp-for="Image" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input asp-for="Image" class="form-control custom-file-input">
+                <label class="custom-file-label">Choose File...</label>
+            </div>
+        </div>
     </div>
     <br />
 
@@ -72,9 +77,17 @@
     <div class="col-12">
         <button class="btn btn-primary" type="submit">Create Person</button>
     </div>
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("Change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(fileName);
+                });
+            });
+        </script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    }
 </form>
 
-@section Scripts {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-}

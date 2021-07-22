@@ -6,7 +6,6 @@ using PersonsApp.EntityFrameworkCore.Data.Entities;
 using PersonsApp.EntityFrameworkCore.Data.Repositories;
 using PersonsApp.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -54,6 +53,15 @@ namespace Persons_App.Controllers
             {
                 try
                 {
+                    string uniqueFileName = null;
+                    if (model.Image != null)
+                    {
+                      string uploadsFolder = Path.Combine(_environment.WebRootPath, "Images");
+                      uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
+                      string FilePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        model.Image.CopyTo(new FileStream(FilePath, FileMode.Create));
+                    }
+
                     var person = new Person()
                     {
                         FirstName = model.FirstName,
@@ -64,7 +72,7 @@ namespace Persons_App.Controllers
                         PhoneNumber = model.PhoneNumber,
                         PhoneNumberType = model.PhoneNumberType,
                         PmNumber = model.PmNumber,
-                        Image = model.Image
+                        Image = uniqueFileName
                     };
 
                     _repository.CreatePerson(person);
@@ -85,23 +93,6 @@ namespace Persons_App.Controllers
             }
 
         }
-
-        //private string UploadedFile(PersonViewModel model)
-        //{
-        //    string uniqueFileName = null;
-
-        //    if (model.Image != null)
-        //    {
-        //        string uploadsFolder = Path.Combine(_environment.WebRootPath, "images");
-        //        uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Image.FileName;
-        //        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //        {
-        //            model.Image.CopyTo(fileStream);
-        //        }
-        //    }
-        //    return uniqueFileName;
-        //}
 
         [HttpGet("person/edit/{id}")]
         public IActionResult Edit(int Id)
@@ -182,7 +173,8 @@ namespace Persons_App.Controllers
                             Gender = (Gender)person.Gender,
                             PhoneNumber = person.PhoneNumber,
                             PhoneNumberType = person.PhoneNumberType,
-                            PmNumber = person.PmNumber
+                            PmNumber = person.PmNumber,
+                            
                         };
                         return View(vm);
                     }

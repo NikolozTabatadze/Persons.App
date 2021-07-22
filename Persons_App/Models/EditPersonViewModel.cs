@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Http;
 using PersonsApp.EntityFrameworkCore.Data.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -37,5 +38,7 @@ namespace PersonsApp.Models
         public string PhoneNumber { get; set; }
 
         public PhoneNumberType PhoneNumberType { get; set; }
+
+        public IFormFile Image { get; set; }
     }
 }

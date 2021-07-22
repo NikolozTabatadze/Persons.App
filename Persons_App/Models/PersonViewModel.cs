@@ -41,7 +41,7 @@ namespace Persons_App.Models
 
         public PhoneNumberType PhoneNumberType { get; set; }
 
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
       
     }
 }

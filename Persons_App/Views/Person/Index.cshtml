@@ -27,7 +27,8 @@
     </thead>
     <tbody>
            @foreach (var p in Model)
-            {
+           {
+               var PhotoPath = "~/Images/" + (p.Image);
             <tr>
                 <td scope="col">@p.Id</td>
                 <td scope="col">@p.FirstName</td>
@@ -38,7 +39,7 @@
                 <td scope="col">@p.PhoneNumber</td>
                 <td scope="col">@p.PhoneNumberType</td>
                 <td scope="col">@p.PmNumber</td>
-                <td scope="col">@p.Image</td>
+                <td scope="col"><img class="card-img-top" src="@PhotoPath" asp-append-version="true" /></td>
                 <td class="col-sm-6">
                     <a asp-controller="person" asp-action="edit" asp-route-id="@p.Id"> Edit </a> |
                     <a asp-controller="person" asp-action="detail" asp-route-id="@p.Id"> Details </a>|

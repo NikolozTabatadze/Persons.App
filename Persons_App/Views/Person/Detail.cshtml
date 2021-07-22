@@ -1,10 +1,15 @@
 ﻿@model EditPersonViewModel
-@{ ViewData["Title"] = "Detail"; }
+@{ ViewData["Title"] = "Detail";
+    var PhotoPath = "~/Images/" + (Model.Image);
+    }
 
 <h2>Detail</h2>
 
 <form method="get" asp-controller="Person" asp-action="detail">
+
+    
     <div class="card-body text-center">
+        <img  class="card-body text-center" scr="@PhotoPath"/>
         <h4>PersonId : @Model.Id</h4>
         <h4>FirstName : @Model.FirstName</h4>
         <h4>LastName : @Model.LastName</h4>
