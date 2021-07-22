@@ -22,7 +22,6 @@
         <option value="0">Male</option>
         <option value="1">Female</option>
     </select>
-    <span asp-validation-for="Gender" class="text-danger"></span>
     <br />
 
     <label asp-for="PmNumber">Private Number</label>
@@ -48,7 +47,6 @@
         <option value="4">Photi</option>
         <option value="5">Batumi</option>
     </select>
-    <span asp-validation-for="City" class="text-danger"></span>
     <br />
 
     <label asp-for="PhoneNumber">Phone Number</label>
@@ -65,7 +63,7 @@
 
     <br />
     <div class="col-12">
-        <button class="btn btn-primary" type="submit">Update Person</button>
+        <button class="btn btn-primary" type="submit" asp-controller="person" asp-action="Edit">Update Person</button>
     </div>
 </form>
 

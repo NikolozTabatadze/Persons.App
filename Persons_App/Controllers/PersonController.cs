@@ -103,14 +103,25 @@ namespace Persons_App.Controllers
         //    return uniqueFileName;
         //}
 
-        [HttpGet("person/edit/id")]
+        [HttpGet("person/edit/{id}")]
         public IActionResult Edit(int Id)
         {
             ViewBag.Title = "Edit Persons";
             if (Id != 0)
             {
                 var person = _repository.GetPersonById(Id);
-                return View(person);
+                var vm = new EditPersonViewModel
+                {
+                    BirthDate = person.BirthDate,
+                    City = (City)person.City,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Gender = (Gender)person.Gender,
+                    PhoneNumber = person.PhoneNumber,
+                    PhoneNumberType = person.PhoneNumberType,
+                    PmNumber = person.PmNumber
+                };
+                return View(vm);
             }
             else
             {
@@ -125,7 +136,8 @@ namespace Persons_App.Controllers
             { 
                 try
                 {
-                    var person = (Person)_repository.GetPersonById(model.Id);
+                    var person =_repository.GetPersonById(model.Id);
+                    person.Id = model.Id;
                     person.FirstName = model.FirstName;
                     person.LastName = model.LastName;
                     person.Gender = model.Gender;
@@ -150,7 +162,7 @@ namespace Persons_App.Controllers
         }
 
 
-        [HttpGet("person/detail/id")]
+        [HttpGet("person/detail/{id}")]
         public IActionResult Detail(int id)
         {
             if (ModelState.IsValid)
@@ -180,7 +192,7 @@ namespace Persons_App.Controllers
                 throw new InvalidOperationException("Sorry We had Some Problem , plesae try later ");
             }
         }
-        [HttpDelete]
+        
         public IActionResult Delete(int id)
         {
             if (ModelState.IsValid)

@@ -20,18 +20,19 @@ namespace PersonsApp.EntityFrameworkCore.Data.Repositories
                 .OrderBy(p => p.FirstName)
                 .ToList();
         }
-        public IEnumerable<Person> GetPersonById(int Id)
+        public Person GetPersonById(int Id)
         {
             return _context.Persons
                 .Where(p => p.Id == Id)
-                .ToList();
+                .FirstOrDefault();
         }
 
-        public IEnumerable<Person> UpdatePerson(Person model)
+        public Person UpdatePerson(Person model)
         {
             var person = _context.Persons.Where(p => p.Id == model.Id).FirstOrDefault();
             if (person != null)
             {
+                person.Id = model.Id;
                 person.FirstName = model.FirstName;
                 person.LastName = model.LastName;
                 person.Gender = model.Gender;
@@ -46,7 +47,7 @@ namespace PersonsApp.EntityFrameworkCore.Data.Repositories
                 return null;
             }
 
-            return (IEnumerable<Person>)person;
+            return person;
         }
 
         public void CreatePerson(Person model)
