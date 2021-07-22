@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Person>
+@{ ViewData["Title"] = "Detail"; }
+
+<h2>Detail</h2>
+
+<form method="get" asp-controller="Person" asp-action="detail">
+    <div class="card-body text-center">
+        @foreach (var p in Model)
+        { 
+        <h4>PersonId : @p.Id</h4>
+        <h4>FirstName : @p.FirstName</h4>
+        <h4>LastName : @p.LastName</h4>
+        <h4>Gender : @p.Gender</h4>
+        <h4>BirthDate : @p.BirthDate</h4>
+        <h4>City : @p.City</h4>
+        <h4>PhoneNumber : @p.PhoneNumber</h4>
+        <h4>PhoneNumberType : @p.PhoneNumberType</h4>
+        <h4>PmNumber : @p.PmNumber</h4>
+        <h4>Image : @p.Image</h4>
+        }
+    </div>
+</form>
+
+<div class="card-footer text-center">
+    <a asp-controller="Person" asp-action="Index" class="btn btn-primary">Back</a>
+    <a asp-action="detail" asp-controller="Person" asp-route-id="@Model.Select(s => s.Id)" class="btn btn-primary">Edit</a>
+    <a class="btn btn-danger" asp-action="detail" asp-controller="Person" >Delete</a>
+</div>

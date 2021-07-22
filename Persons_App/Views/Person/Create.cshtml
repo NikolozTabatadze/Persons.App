@@ -1,0 +1,83 @@
+﻿@model PersonViewModel
+@{ ViewBag.Title = "Add Persons"; }
+
+<form method="post" asp-controller="Person" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <label asp-for="FirstName">First Name</label>
+    <br />
+    <input asp-for="FirstName">
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+    <br />
+
+    <label asp-for="LastName">Last Name</label>
+    <br />
+    <input asp-for="LastName">
+    <span asp-validation-for="LastName" class="text-danger"></span>
+    <br />
+
+    <label asp-for="Gender">Gender</label>
+    <br />
+    <select asp-for="Gender" class="form-select">
+        <option selected>Choose...</option>
+        <option value="0">Male</option>
+        <option value="1">Female</option>
+    </select>
+    <span asp-validation-for="Gender" class="text-danger"></span>
+    <br />
+
+    <label asp-for="PmNumber">Private Number</label>
+    <br />
+    <input asp-for="PmNumber" type="number">
+    <span asp-validation-for="PmNumber" class="text-danger"></span>
+    <br />
+
+    <label asp-for="BirthDate">Date</label>
+    <br />
+    <input asp-for="BirthDate">
+    <span asp-validation-for="BirthDate" class="text-danger"></span>
+    <br />
+
+    <label asp-for="City">City</label>
+    <br />
+    <select asp-for="City" class="form-select">
+        <option selected>Choose...</option>
+        <option value="0">Tbilisi</option>
+        <option value="1">Rustavi</option>
+        <option value="2">Kutaisi</option>
+        <option value="3">Zugdidi</option>
+        <option value="4">Photi</option>
+        <option value="5">Batumi</option>
+    </select>
+    <span asp-validation-for="City" class="text-danger"></span>
+    <br />
+
+    <label asp-for="PhoneNumber">Phone Number</label>
+    <br />
+    <select asp-for="PhoneNumberType" class="form-select">
+        <option selected>Choose...</option>
+        <option value="0">Mobile</option>
+        <option value="1">Office</option>
+        <option value="2">Home</option>
+    </select>
+    <input asp-for="PhoneNumber" type="text" class="form-control">
+    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    <br />
+
+
+    <div class="mb-3">
+        <label asp-for="Image">Default file input example</label>
+        <input asp-for="Image" class="form-control" type="file" id="formFile">
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    <br />
+
+    <br />
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Create Person</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}
