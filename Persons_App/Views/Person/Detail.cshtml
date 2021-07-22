@@ -1,25 +1,24 @@
-﻿@model PersonViewModel
+﻿@model EditPersonViewModel
 @{ ViewData["Title"] = "Detail"; }
 
 <h2>Detail</h2>
 
 <form method="get" asp-controller="Person" asp-action="detail">
     <div class="card-body text-center">
-        <h4>PersonId : Id</h4>
-        <h4>FirstName : FirstName</h4>
-        <h4>LastName : LastName</h4>
-        <h4>Gender : Gender</h4>
-        <h4>BirthDate : BirthDate</h4>
-        <h4>City : City</h4>
-        <h4>PhoneNumber : PhoneNumber</h4>
-        <h4>PhoneNumberType : PhoneNumberType</h4>
-        <h4>PmNumber : PmNumber</h4>
-        <h4>Image : Image</h4>
+        <h4>PersonId : @Model.Id</h4>
+        <h4>FirstName : @Model.FirstName</h4>
+        <h4>LastName : @Model.LastName</h4>
+        <h4>Gender : @Model.Gender</h4>
+        <h4>BirthDate : @Model.BirthDate</h4>
+        <h4>City : @Model.City</h4>
+        <h4>PhoneNumber : @Model.PhoneNumber</h4>
+        <h4>PhoneNumberType : @Model.PhoneNumberType</h4>
+        <h4>PmNumber : @Model.PmNumber</h4>
     </div>
 </form>
 
 <div class="card-footer text-center">
     <a asp-controller="Person" asp-action="Index" class="btn btn-primary">Back</a>
-    <a asp-action="detail" asp-controller="Person" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-    <a class="btn btn-danger" asp-action="detail" asp-controller="Person" >Delete</a>
+    <a  asp-controller="Person"asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+    <a class="btn btn-danger" asp-action="Delete" asp-controller="Person" asp-route-id="@Model.Id" >Delete</a>
 </div>

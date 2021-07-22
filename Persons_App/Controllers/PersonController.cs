@@ -163,22 +163,34 @@ namespace Persons_App.Controllers
 
 
         [HttpGet("person/detail/{id}")]
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int Id)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    if (id != 0)
+                    if (Id != 0)
                     {
-                         var detailperson =_repository.GetPersonById(id);
-                        return View(detailperson);
+                        var person = _repository.GetPersonById(Id);
+                        var vm = new EditPersonViewModel
+                        {
+                            Id = person.Id,
+                            BirthDate = person.BirthDate,
+                            City = (City)person.City,
+                            FirstName = person.FirstName,
+                            LastName = person.LastName,
+                            Gender = (Gender)person.Gender,
+                            PhoneNumber = person.PhoneNumber,
+                            PhoneNumberType = person.PhoneNumberType,
+                            PmNumber = person.PmNumber
+                        };
+                        return View(vm);
                     }
                     else
                     {
-                        return BadRequest("Not Found Peron Details ");
+                        return NotFound();
                     }
-                      
+
                 }
                 catch (Exception ex )
                 {
