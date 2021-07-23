@@ -1,4 +1,4 @@
-﻿@model EditPersonViewModel
+﻿@model DetailPersonViewModel
 @{ ViewData["Title"] = "Detail";
     var PhotoPath = "~/Images/" + (Model.Image);
     }
@@ -9,7 +9,7 @@
 
     
     <div class="card-body text-center">
-        <img  class="card-body text-center" scr="@PhotoPath"/>
+        <img class="card-img-top" src="@PhotoPath" asp-append-version="true" style="width:500px" />
         <h4>PersonId : @Model.Id</h4>
         <h4>FirstName : @Model.FirstName</h4>
         <h4>LastName : @Model.LastName</h4>

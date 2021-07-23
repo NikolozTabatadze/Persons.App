@@ -9,7 +9,7 @@ namespace PersonsApp.EntityFrameworkCore.Data.Repositories
 {
     public interface IPersonRepository
     {
-        IEnumerable<Person> SerachPerson(string searchTerm);
+        IEnumerable<Person> SearchPerson(string searchTerm);
         IEnumerable<Person> GetAllPersons();
         Person GetPersonById(int Id);
         Person UpdatePerson(Person model);

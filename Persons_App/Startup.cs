@@ -7,10 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PersonsApp.EntityFrameworkCore.Data;
 using PersonsApp.EntityFrameworkCore.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PersonsApp.Filters;
+using PersonsApp.Middlewares;
+
 
 namespace Persons_App
 {
@@ -27,7 +26,7 @@ namespace Persons_App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PersonsDBContext>(db=> db.UseSqlServer(Configuration.GetConnectionString("PersonsDb")));
-            services.AddControllersWithViews();
+            services.AddControllersWithViews( option => { option.Filters.Add(typeof(GlobalModelStateValidatorAttribute)); });
             InitializeDatabase(services);
 
             services.AddScoped<IPersonRepository, PersonRepository>();
@@ -43,6 +42,7 @@ namespace Persons_App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,6 +52,9 @@ namespace Persons_App
                 //app.UseExceptionHandler("/Person/Error");
                 app.UseDeveloperExceptionPage();
             }
+
+
+            app.UseErrorLogging();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

@@ -23,7 +23,7 @@ namespace PersonsApp.EntityFrameworkCore.Data.Mappings
                 entity.Property(t => t.City).HasColumnName("City").IsRequired(false);
                 entity.Property(t => t.PhoneNumber).HasColumnName("PhoneNumber").IsRequired().HasMaxLength(50);
                 entity.Property(t => t.PhoneNumberType).HasColumnName("PhoneNumberType").IsRequired();
-                entity.Property(t => t.Image).HasColumnName("Image").IsRequired(false).HasMaxLength(50);
+                entity.Property(t => t.Image).HasColumnName("Image").IsRequired(false).HasMaxLength(255);
                 entity.HasMany(t => t.RelatedPersons).WithOne(t => t.Person).HasForeignKey(t => t.PersonId);
             }
         }

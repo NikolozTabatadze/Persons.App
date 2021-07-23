@@ -30,7 +30,13 @@ namespace Persons_App.Controllers
             try
             {
                 var result = _repository.GetAllPersons();
-                return View(result);
+                var vm = new PersonIndexViewModel
+                {
+                    Persons = result,
+                    SearchTerm = ""
+                };
+
+                return View(vm);
 
             }
             catch (Exception ex)
@@ -41,17 +47,23 @@ namespace Persons_App.Controllers
             }
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Index(string search)
-        //{
-        //    ViewData["GetPersonDetails"] = search;
+        [HttpGet]
+        public IActionResult Search(string searchTerm)
+        {
+            var result = _repository.SearchPerson(searchTerm);
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var vm = new PersonIndexViewModel
+                {
+                    Persons = result,
+                    SearchTerm = searchTerm
+                };
+                return View("index", vm);
+            }
+            var res = _repository.GetAllPersons();
+            return View("index",res);
 
-        //    var result =_repository.SerachPerson(search);
-        //    if (!string.IsNullOrEmpty(search))
-        //    {
-               
-        //    }
-        //}
+        }
 
 
 
@@ -66,10 +78,9 @@ namespace Persons_App.Controllers
         }
 
         [HttpPost("person/create")]
-        public IActionResult Create(PersonViewModel model)
+        public IActionResult Create(CreatePersonViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 try
                 {
                     string uniqueFileName = null;
@@ -105,11 +116,7 @@ namespace Persons_App.Controllers
                     _logger.LogError($"failed to save a new Person: {ex} ");
                     return BadRequest("Failed to save a new Person");
                 }
-            }
-            else
-            {
-                throw new InvalidOperationException("This input is not valid , plesae try later ");
-            }
+            
 
         }
 
@@ -119,6 +126,7 @@ namespace Persons_App.Controllers
             ViewBag.Title = "Edit Persons";
             if (Id != 0)
             {
+
                 var person = _repository.GetPersonById(Id);
                 var vm = new EditPersonViewModel
                 {
@@ -129,7 +137,8 @@ namespace Persons_App.Controllers
                     Gender = (Gender)person.Gender,
                     PhoneNumber = person.PhoneNumber,
                     PhoneNumberType = person.PhoneNumberType,
-                    PmNumber = person.PmNumber
+                    PmNumber = person.PmNumber,
+                    Image = person.Image
                 };
                 return View(vm);
             }
@@ -142,10 +151,19 @@ namespace Persons_App.Controllers
         [HttpPost]
         public IActionResult Edit(EditPersonViewModel model)
         {
-            if (ModelState.IsValid)
-            { 
+
                 try
                 {
+                    string uniqueFileName = null;
+                    if (model.ImagePath != null)
+                    {
+                        string uploadsFolder = Path.Combine(_environment.WebRootPath, "Images");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ImagePath.FileName;
+                        string FilePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        model.ImagePath.CopyTo(new FileStream(FilePath, FileMode.Create));
+                    }
+
+
                     var person =_repository.GetPersonById(model.Id);
                     person.Id = model.Id;
                     person.FirstName = model.FirstName;
@@ -156,7 +174,8 @@ namespace Persons_App.Controllers
                     person.PhoneNumber = model.PhoneNumber;
                     person.PhoneNumberType = model.PhoneNumberType;
                     person.PmNumber = model.PmNumber;
-                   
+                    person.Image = model.Image = uniqueFileName;
+
                     _repository.UpdatePerson(person);
                     _repository.SaveChanges();
                     return RedirectToAction("index");
@@ -167,22 +186,20 @@ namespace Persons_App.Controllers
                     return BadRequest("Failed to save a Updated Person");
                 }
                
-            }
-            return BadRequest("Failed to save a Updated Person");
+
         }
 
 
         [HttpGet("person/detail/{id}")]
         public IActionResult Detail(int Id)
         {
-            if (ModelState.IsValid)
-            {
+
                 try
                 {
                     if (Id != 0)
                     {
                         var person = _repository.GetPersonById(Id);
-                        var vm = new EditPersonViewModel
+                        var vm = new DetailPersonViewModel
                         {
                             Id = person.Id,
                             BirthDate = person.BirthDate,
@@ -193,6 +210,7 @@ namespace Persons_App.Controllers
                             PhoneNumber = person.PhoneNumber,
                             PhoneNumberType = person.PhoneNumberType,
                             PmNumber = person.PmNumber,
+                            Image = person.Image
                             
                         };
                         return View(vm);
@@ -209,17 +227,12 @@ namespace Persons_App.Controllers
                     _logger.LogError($"Failed to Move Detail Page: {ex} ");
                     return BadRequest("Failed to Move Detail Page ");
                 }
-            }
-            else
-            {
-                throw new InvalidOperationException("Sorry We had Some Problem , plesae try later ");
-            }
+
         }
-        
+
         public IActionResult Delete(int id)
         {
-            if (ModelState.IsValid)
-            {
+
                 try
                 {
                     if (id != 0)
@@ -239,11 +252,8 @@ namespace Persons_App.Controllers
                     _logger.LogError($"failed to Delete  Person: {ex} ");
                     return BadRequest("Failed to Delete  Person");
                 }
-            }
-            else
-            {
-                throw new InvalidOperationException("Sorry We had Some Problem , plesae try later ");
-            }
+        
+
         }
 
 

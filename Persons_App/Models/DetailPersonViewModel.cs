@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
+using Microsoft.AspNetCore.Http;
 using PersonsApp.EntityFrameworkCore.Data.Entities;
-using PersonsApp.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-
-
-namespace Persons_App.Models
+namespace PersonsApp.Models
 {
-    public class PersonViewModel
+    public class DetailPersonViewModel
     {
         [Required]
         public int Id { get; set; }
@@ -17,7 +14,7 @@ namespace Persons_App.Models
         [Required]
         [MinLength(2)]
         [MaxLength(50)]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use latino letters only please")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use Latino letters only please")]
         public string FirstName { get; set; }
 
         [Required]
@@ -25,7 +22,7 @@ namespace Persons_App.Models
         [MaxLength(50)]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use Latino letters only please")]
         public string LastName { get; set; }
-        
+
         public Gender Gender { get; set; }
 
         [Required]
@@ -45,7 +42,6 @@ namespace Persons_App.Models
 
         public PhoneNumberType PhoneNumberType { get; set; }
 
-        public IFormFile Image { get; set; }
-      
+        public string Image { get; set; }
     }
 }

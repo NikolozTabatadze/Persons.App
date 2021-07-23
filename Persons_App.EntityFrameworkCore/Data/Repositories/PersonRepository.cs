@@ -57,16 +57,15 @@ namespace PersonsApp.EntityFrameworkCore.Data.Repositories
 
         public void DeletePerson(int Id)
         {
-                var item = _context.Persons.Where(p => p.Id == Id).FirstOrDefault();
-                _context.Persons.Remove(item);
-            
+            var item = _context.Persons.Where(p => p.Id == Id).FirstOrDefault();
+            _context.Persons.Remove(item);
         }
         public void SaveChanges()
         {
           _context.SaveChanges();
         }
 
-        public IEnumerable<Person> SerachPerson(string searchTerm)
+        public IEnumerable<Person> SearchPerson(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
@@ -75,7 +74,7 @@ namespace PersonsApp.EntityFrameworkCore.Data.Repositories
             return _context.Persons.Where(x => x.FirstName.Contains(searchTerm) ||
                                                x.LastName.Contains(searchTerm) ||
                                                x.PmNumber.Contains(searchTerm) ||
-                                               x.PhoneNumber.Contains(searchTerm));
+                                               x.PhoneNumber.Contains(searchTerm)).ToList();
         }
     }
 }
