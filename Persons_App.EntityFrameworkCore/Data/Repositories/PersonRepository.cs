@@ -65,5 +65,17 @@ namespace PersonsApp.EntityFrameworkCore.Data.Repositories
         {
           _context.SaveChanges();
         }
+
+        public IEnumerable<Person> SerachPerson(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                return _context.Persons.ToList();
+            }
+            return _context.Persons.Where(x => x.FirstName.Contains(searchTerm) ||
+                                               x.LastName.Contains(searchTerm) ||
+                                               x.PmNumber.Contains(searchTerm) ||
+                                               x.PhoneNumber.Contains(searchTerm));
+        }
     }
 }

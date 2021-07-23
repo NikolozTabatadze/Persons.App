@@ -8,6 +8,7 @@ using PersonsApp.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Persons_App.Controllers
 {
@@ -39,6 +40,24 @@ namespace Persons_App.Controllers
 
             }
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> Index(string search)
+        //{
+        //    ViewData["GetPersonDetails"] = search;
+
+        //    var result =_repository.SerachPerson(search);
+        //    if (!string.IsNullOrEmpty(search))
+        //    {
+               
+        //    }
+        //}
+
+
+
+
+
+
         [HttpGet("person/create")]
         public IActionResult Create()
         {
@@ -89,7 +108,7 @@ namespace Persons_App.Controllers
             }
             else
             {
-                throw new InvalidOperationException("Sorry We had Some Problem , plesae try later ");
+                throw new InvalidOperationException("This input is not valid , plesae try later ");
             }
 
         }
