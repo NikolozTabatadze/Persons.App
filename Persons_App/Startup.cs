@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PersonsApp.EntityFrameworkCore.Data;
-using PersonsApp.EntityFrameworkCore.Data.Repositories;
+using Persons_App.Application.Interfaces;
+using Persons_App.Application.Services;
+using Persons_App.Domain.Interfaces;
+using Persons_App.Infrastructure.Context;
+using Persons_App.Infrastructure.Repositories;
 using PersonsApp.Filters;
 using PersonsApp.Middlewares;
 
@@ -29,7 +31,9 @@ namespace Persons_App
             services.AddControllersWithViews( option => { option.Filters.Add(typeof(GlobalModelStateValidatorAttribute)); });
             InitializeDatabase(services);
 
+            services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IPersonRepository, PersonRepository>();
+           
         }
 
         private void InitializeDatabase(IServiceCollection services)

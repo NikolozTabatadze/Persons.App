@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Persons_App.EntityFrameworkCore\PersonsApp.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Persons_App.Application\Persons_App.Application.csproj" />
+    <ProjectReference Include="..\Persons_App.Domain\Persons_App.Domain.csproj" />
+    <ProjectReference Include="..\Persons_App.Infrastructure\Persons_App.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

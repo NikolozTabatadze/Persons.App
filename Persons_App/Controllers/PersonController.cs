@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Persons_App.Models;
-using PersonsApp.EntityFrameworkCore.Data.Entities;
-using PersonsApp.EntityFrameworkCore.Data.Repositories;
-using PersonsApp.Models;
+using Persons_App.Application.Interfaces;
+using Persons_App.Application.ViewModels;
+using Persons_App.Domain.Entities;
+using Persons_App.Domain.Enums;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Persons_App.Controllers
 {
     public class PersonController : Controller
     {
         private readonly ILogger<PersonController> _logger;
-        private readonly IPersonRepository _repository;
+        private readonly IPersonService _personService;
         private readonly IWebHostEnvironment _environment;
 
-        public PersonController(ILogger<PersonController> logger, IPersonRepository repository, IWebHostEnvironment environment)
+        public PersonController(ILogger<PersonController> logger, IPersonService personService, IWebHostEnvironment environment)
         {
             _logger = logger;
-            _repository = repository;
+            _personService = personService;
             _environment = environment;
         }
 
@@ -29,7 +29,7 @@ namespace Persons_App.Controllers
         {
             try
             {
-                var result = _repository.GetAllPersons();
+                var result = _personService.GetPersons();
                 var vm = new PersonIndexViewModel
                 {
                     Persons = result,
@@ -50,7 +50,7 @@ namespace Persons_App.Controllers
         [HttpGet]
         public IActionResult Search(string searchTerm)
         {
-            var result = _repository.SearchPerson(searchTerm);
+            var result = _personService.SearchPerson(searchTerm);
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 var vm = new PersonIndexViewModel
@@ -60,7 +60,7 @@ namespace Persons_App.Controllers
                 };
                 return View("index", vm);
             }
-            var res = _repository.GetAllPersons();
+            var res = _personService.GetPersons();
             return View("index",res);
 
         }
@@ -78,7 +78,7 @@ namespace Persons_App.Controllers
         }
 
         [HttpPost("person/create")]
-        public IActionResult Create(CreatePersonViewModel model)
+        public IActionResult Create(CreatePersonsViewModel model)
         {
             
                 try
@@ -105,8 +105,8 @@ namespace Persons_App.Controllers
                         Image = uniqueFileName
                     };
 
-                    _repository.CreatePerson(person);
-                    _repository.SaveChanges();
+                    _personService.CreatePerson(person);
+                    _personService.SaveChanges();
                     return RedirectToAction("Index", "Person");
 
                 }
@@ -127,7 +127,7 @@ namespace Persons_App.Controllers
             if (Id != 0)
             {
 
-                var person = _repository.GetPersonById(Id);
+                var person = _personService.GetPersonById(Id);
                 var vm = new EditPersonViewModel
                 {
                     BirthDate = person.BirthDate,
@@ -162,23 +162,29 @@ namespace Persons_App.Controllers
                         string FilePath = Path.Combine(uploadsFolder, uniqueFileName);
                         model.ImagePath.CopyTo(new FileStream(FilePath, FileMode.Create));
                     }
+               
+                        
 
-
-                    var person =_repository.GetPersonById(model.Id);
-                    person.Id = model.Id;
-                    person.FirstName = model.FirstName;
-                    person.LastName = model.LastName;
-                    person.Gender = model.Gender;
-                    person.City = model.City;
-                    person.BirthDate = model.BirthDate;
-                    person.PhoneNumber = model.PhoneNumber;
-                    person.PhoneNumberType = model.PhoneNumberType;
-                    person.PmNumber = model.PmNumber;
+                    var person =_personService.GetPersonById(model.Id);
+                        person.Id = model.Id;
+                        person.FirstName = model.FirstName;
+                        person.LastName = model.LastName;
+                        person.Gender = model.Gender;
+                        person.City = model.City;
+                        person.BirthDate = model.BirthDate;
+                        person.PhoneNumber = model.PhoneNumber;
+                        person.PhoneNumberType = model.PhoneNumberType;
+                        person.PmNumber = model.PmNumber;
+                if (uniqueFileName != null)
+                {
                     person.Image = model.Image = uniqueFileName;
+                }
+                else { model.Image = person.Image; }
+                
 
-                    _repository.UpdatePerson(person);
-                    _repository.SaveChanges();
-                    return RedirectToAction("index");
+                _personService.UpdatePerson(person);
+                        _personService.SaveChanges();
+                        return RedirectToAction("index");
                 }
                 catch (Exception ex)
                 {
@@ -198,7 +204,7 @@ namespace Persons_App.Controllers
                 {
                     if (Id != 0)
                     {
-                        var person = _repository.GetPersonById(Id);
+                        var person = _personService.GetPersonById(Id);
                         var vm = new DetailPersonViewModel
                         {
                             Id = person.Id,
@@ -237,8 +243,8 @@ namespace Persons_App.Controllers
                 {
                     if (id != 0)
                     {
-                        _repository.DeletePerson(id);
-                        _repository.SaveChanges();
+                        _personService.DeletePerson(id);
+                        _personService.SaveChanges();
                         return RedirectToAction("index", "Person");
                     }
                     else

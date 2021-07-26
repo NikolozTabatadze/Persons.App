@@ -5,7 +5,7 @@
 
 <h2>Detail</h2>
 
-<form method="get" asp-controller="Person" asp-action="detail">
+<form method="get"  asp-controller="Person" asp-action="detail">
 
     
     <div class="card-body text-center">
@@ -25,5 +25,5 @@
 <div class="card-footer text-center">
     <a asp-controller="Person" asp-action="Index" class="btn btn-primary">Back</a>
     <a  asp-controller="Person"asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
-    <a class="btn btn-danger" asp-action="Delete" asp-controller="Person" asp-route-id="@Model.Id" >Delete</a>
+    <a class="btn btn-danger" asp-action="Delete" asp-controller="Person" asp-route-id="@Model.Id "onclick="return confirm('Are you sure to delete item ?')" >Delete</a>
 </div>
